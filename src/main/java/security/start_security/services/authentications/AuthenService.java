@@ -1,4 +1,4 @@
-package security.start_security.services;
+package security.start_security.services.authentications;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
