@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())  // Disable CSRF using the new method (POST, GET, DELETE, PUT)
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/welcome/**").permitAll()  // Thay antMatchers bằng requestMatchers
                         .requestMatchers("/api/v1/create-user").permitAll()  // Thay antMatchers bằng requestMatchers
@@ -33,8 +35,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/get-user").permitAll()
                         .requestMatchers("/api/v1/test-post").permitAll()
                         .anyRequest().authenticated()
-                );
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
